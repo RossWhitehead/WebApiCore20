@@ -37,7 +37,7 @@ namespace WebApiCore20.Queries.Customer.GetAll
                 }
             }.ToArray();
 
-            return new Task<QueryResult>(() => { return result; });
+            return Task.FromResult<QueryResult>(result);
         }
     }
 }
