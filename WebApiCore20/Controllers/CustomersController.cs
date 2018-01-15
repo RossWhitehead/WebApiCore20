@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GetAll = WebApiCore20.Queries.Customer.GetAll;
 using Get = WebApiCore20.Queries.Customer.Get;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApiCore20.Controllers
 {
@@ -79,20 +80,21 @@ namespace WebApiCore20.Controllers
         //    return NoContent();
         //}
 
-        //    // POST: api/Customers
-        //    [HttpPost]
-        //    public async Task<IActionResult> PostCustomer([FromBody] Customer customer)
+        //// POST: apiv1//Customers
+        //[HttpPost]
+        //[Produces(typeof(Customer))]
+        //public async Task<IActionResult> PostCustomer([FromBody] Customer customer)
+        //{
+        //    if (!ModelState.IsValid)
         //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return BadRequest(ModelState);
-        //        }
-
-        //        _context.Customers.Add(customer);
-        //        await _context.SaveChangesAsync();
-
-        //        return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
+        //        return BadRequest(ModelState);
         //    }
+
+        //    _context.Customers.Add(customer);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
+        //}
 
         //    // DELETE: api/Customers/5
         //    [HttpDelete("{id}")]
