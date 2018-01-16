@@ -13,20 +13,19 @@ namespace IdentityServer
                 new Client
                 {
                     ClientName = "Test Client",
-                    ClientId = "testclient",
-                    Enabled = true,
-                    AccessTokenType = AccessTokenType.Reference,
 
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientId = "client",
+
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
 
                     ClientSecrets = new List<Secret>
                     {
-                        new Secret("F621F470-9731-4A25-80EF-67A6F7C5F4B8".Sha256())
+                        new Secret("secret".Sha256())
                     },
 
-                    AllowedScopes = new List<string>
+                    AllowedScopes =
                     {
-                        "WebApiCore20"
+                        "api1"
                     }
                 };
         }

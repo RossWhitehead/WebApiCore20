@@ -10,10 +10,7 @@ namespace IdentityServer
         public static IEnumerable<ApiResource> Get()
         {
             yield return
-               new ApiResource
-               {
-                   Name = "WebApiCore20"
-               };
+               new ApiResource("api1", "WebApi Core 2.0");
         }
     }
 }
