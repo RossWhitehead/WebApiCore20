@@ -6,7 +6,7 @@ using MediatR;
 
 namespace WebApiCore20.Queries.Customer.Get
 {
-    public class Query : IRequest<Model>
+    public class Query : IRequest<QueryResult>
     {
         public Query(int customerId)
         {

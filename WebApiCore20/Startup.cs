@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -29,7 +30,8 @@ namespace WebApiCore20
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Commands.Customer.Create.CommandValidator>());
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
@@ -53,7 +55,7 @@ namespace WebApiCore20
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -67,6 +69,8 @@ namespace WebApiCore20
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApiCore20");
             });
+
+            DbSeeder.Seed(context);
         }
     }
 }

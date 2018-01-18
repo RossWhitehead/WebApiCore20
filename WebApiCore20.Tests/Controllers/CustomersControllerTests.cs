@@ -45,7 +45,7 @@ namespace WebApiCore20.Tests.Controllers
             // Arange
             var notACustomer = 1;
 
-            mockMediator.Setup(x => x.Send(It.IsAny<Get.Query>(), default(CancellationToken))).ReturnsAsync((Get.Model)null);
+            mockMediator.Setup(x => x.Send(It.IsAny<Get.Query>(), default(CancellationToken))).ReturnsAsync((Get.QueryResult)null);
 
             // Act
             var actualResult = await sut.GetCustomer(notACustomer);
@@ -60,7 +60,7 @@ namespace WebApiCore20.Tests.Controllers
             // Arange
             var customer = 1;
 
-            var expectedQueryResult = new Fixture().Create<Get.Model>();
+            var expectedQueryResult = new Fixture().Create<Get.QueryResult>();
 
             mockMediator.Setup(x => x.Send(It.Is<Get.Query>(q => q.CustomerId == customer), default(CancellationToken)))
                 .ReturnsAsync(expectedQueryResult);

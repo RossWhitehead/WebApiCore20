@@ -21,15 +21,15 @@ namespace WebApiCore20.Queries.Customer.GetAll
         {
             var result = new QueryResult();
 
-            result.Customers = new List<Model>
+            result.Customers = new List<QueryResult.Customer>
             {
-                new Model
+                new QueryResult.Customer
                 {
                     CustomerId = 1,
                     FirstName = "Ross",
                     LastName = "Whitehead"
                 },
-                new Model
+                new QueryResult.Customer
                 {
                     CustomerId = 2,
                     FirstName = "John",

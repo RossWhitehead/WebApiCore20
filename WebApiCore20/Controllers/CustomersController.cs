@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GetAll = WebApiCore20.Queries.Customer.GetAll;
+using Create = WebApiCore20.Commands.Customer.Create;
+using Delete = WebApiCore20.Commands.Customer.Delete;
 using Get = WebApiCore20.Queries.Customer.Get;
-using Microsoft.AspNetCore.Authorization;
+using GetAll = WebApiCore20.Queries.Customer.GetAll;
+using Update = WebApiCore20.Commands.Customer.Update;
 
 namespace WebApiCore20.Controllers
 {
@@ -35,91 +32,83 @@ namespace WebApiCore20.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomer([FromRoute] int id)
         {
-            var model = await mediator.Send(new Get.Query(id));
+            var customer = await QueryCustomer(id);
 
-            if (model == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return Ok(model);
+            return Ok(customer);
         }
 
-        //// PUT: api/Customers/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutCustomer([FromRoute] int id, [FromBody] Customer customer)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        // PUT: api/Customers/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCustomer([FromRoute] int id, [FromBody] Update.Command updateCommand)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    if (id != customer.CustomerId)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (id != updateCommand.CustomerId)
+            {
+                return BadRequest();
+            }
 
-        //    _context.Entry(customer).State = EntityState.Modified;
+            var customer = await QueryCustomer(id);
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!CustomerExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            if (customer == null)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            var commandResult = await mediator.Send(updateCommand);
 
-        //// POST: apiv1//Customers
-        //[HttpPost]
-        //[Produces(typeof(Customer))]
-        //public async Task<IActionResult> PostCustomer([FromBody] Customer customer)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+            return NoContent();
+        }
 
-        //    _context.Customers.Add(customer);
-        //    await _context.SaveChangesAsync();
+        // POST: api/v1/Customers
+        [HttpPost]
+        [Produces(typeof(Get.QueryResult))]
+        public async Task<IActionResult> PostCustomer([FromBody] Create.Command createCommand)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    return CreatedAtAction("GetCustomer", new { id = customer.CustomerId }, customer);
-        //}
+            var commandResult = await mediator.Send(createCommand);
 
-        //    // DELETE: api/Customers/5
-        //    [HttpDelete("{id}")]
-        //    public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return BadRequest(ModelState);
-        //        }
+            var customer = await QueryCustomer(commandResult.Result);
 
-        //        var customer = await _context.Customers.SingleOrDefaultAsync(m => m.CustomerId == id);
-        //        if (customer == null)
-        //        {
-        //            return NotFound();
-        //        }
+            return CreatedAtAction("PostCustomer", new { id = commandResult.Result }, customer);
+        }
 
-        //        _context.Customers.Remove(customer);
-        //        await _context.SaveChangesAsync();
+        // DELETE: api/Customers/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //        return Ok(customer);
-        //    }
+            var customer = await QueryCustomer(id);
 
-        //    private bool CustomerExists(int id)
-        //    {
-        //        return _context.Customers.Any(e => e.CustomerId == id);
-        //    }
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var commandResult = await mediator.Send(new Delete.Command { CustomerId = id });
+
+            return Ok(customer);
+        }
+
+        private async Task<Get.QueryResult> QueryCustomer(int id)
+        {
+            return await mediator.Send(new Get.Query(id));
+        }
     }
 }

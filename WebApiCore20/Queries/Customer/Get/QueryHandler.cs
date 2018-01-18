@@ -8,7 +8,7 @@ using WebApiCore20.Data;
 
 namespace WebApiCore20.Queries.Customer.Get
 {
-    public class QueryHandler : IRequestHandler<Query, Model>
+    public class QueryHandler : IRequestHandler<Query, QueryResult>
     {
         private readonly ApplicationDbContext db;
 
@@ -17,16 +17,16 @@ namespace WebApiCore20.Queries.Customer.Get
             this.db = db;
         }
 
-        public Task<Model> Handle(Query request, CancellationToken cancellationToken)
+        public Task<QueryResult> Handle(Query request, CancellationToken cancellationToken)
         {
-            var result = new Model
+            var result = new QueryResult
             {
                 CustomerId = 1,
                 FirstName = "Ross",
                 LastName = "Whitehead"
             };
 
-            return Task.FromResult<Model>(result);
+            return Task.FromResult<QueryResult>(result);
         }
     }
 }
