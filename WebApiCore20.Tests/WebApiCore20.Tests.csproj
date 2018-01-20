@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.0.0" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="FluentAssertions" Version="5.0.0-rc0002" />
     <PackageReference Include="MediatR" Version="4.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0-preview-20180109-01" />
@@ -19,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
   <ItemGroup>

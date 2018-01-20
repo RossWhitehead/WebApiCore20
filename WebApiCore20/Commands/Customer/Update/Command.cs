@@ -11,5 +11,6 @@ namespace WebApiCore20.Commands.Customer.Update
         public int CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string ContactEmail { get; set; }
     }
 }

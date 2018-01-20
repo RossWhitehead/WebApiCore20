@@ -10,5 +10,6 @@ namespace WebApiCore20.Commands.Customer.Create
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string ContactEmail { get; set; }
     }
 }

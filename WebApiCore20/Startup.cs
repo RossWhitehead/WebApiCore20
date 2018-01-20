@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using IdentityServer4.AccessTokenValidation;
 using MediatR;
@@ -32,6 +33,8 @@ namespace WebApiCore20
         {
             services.AddMvc()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Commands.Customer.Create.CommandValidator>());
+
+            services.AddAutoMapper();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options =>
