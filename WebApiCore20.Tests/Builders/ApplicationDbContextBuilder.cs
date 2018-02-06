@@ -18,6 +18,8 @@ namespace WebApiCore20.Tests.Builders
                .Options;
 
             this.applicationDbContext = new ApplicationDbContext(options);
+
+            this.customers = new List<Customer>();
         }
 
         public static implicit operator ApplicationDbContext(ApplicationDbContextBuilder instance)

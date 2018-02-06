@@ -29,18 +29,17 @@ namespace WebApiCore20.Tests.Queries.Customer
         public async void Handle_ReturnsCustomer_WhereCustomerExists()
         {
             // Arrange
-            var customerId = fixture.Create<int>();
-            var customerData = fixture.CreateMany<Data.Customer>(customerId).ToList();
+            var customerData = fixture.CreateMany<Data.Customer>(1).ToList();
             var testDbContext = new ApplicationDbContextBuilder().WithCustomers(customerData).Build();
 
             var expectedCustomer = fixture.Create<QueryResult>();
 
-            mockMapper.Setup(x => x.Map<QueryResult>(customerData[0])).Returns(expectedCustomer);
+            mockMapper.Setup(x => x.Map<QueryResult>(It.Is<Data.Customer>(y => y.CustomerId == customerData[0].CustomerId))).Returns(expectedCustomer);
 
             var sut = new QueryHandler(testDbContext, mockMapper.Object);
 
             // Act
-            var actualResult = await sut.Handle(new Query(customerId), default(CancellationToken));
+            var actualResult = await sut.Handle(new Query(customerData[0].CustomerId), default(CancellationToken));
 
             // Assert
             actualResult.Should().BeOfType<QueryResult>()
@@ -62,8 +61,7 @@ namespace WebApiCore20.Tests.Queries.Customer
             var actualResult = await sut.Handle(new Query(customerId), default(CancellationToken));
 
             // Assert
-            actualResult.Should().BeOfType<QueryResult>()
-                .And.BeNull();
+            actualResult.Should().BeNull();
         }
     }
 }
